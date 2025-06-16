@@ -7,8 +7,8 @@
         </div>
         <div class="d-flex justify-content-end align-items-center">
             <a href="#book-a-table" class="cta-btn me-2">Забронировать столик</a>
-            <a class="p-2 link me-2" href="#">Вход</a>
-            <a class="link" href="#">Регистрация</a>
+            <a class="p-2 link me-2" href="{% url 'users:login' %}">Вход</a>
+            <a class="link" href="{% url 'users:register' %}">Регистрация</a>
         </div>
 
       </div>
@@ -16,7 +16,7 @@
 
 <div class="branding d-flex align-items-cente">
     <div class="container position-relative d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
+        <a href="{% url 'home' %}" class="logo d-flex align-items-center">
           <!-- Uncomment the line below if you also wish to use an image logo -->
           <!-- <img src="assets/img/logo.png" alt=""> -->
           <h1 class="sitename">Savor</h1>
