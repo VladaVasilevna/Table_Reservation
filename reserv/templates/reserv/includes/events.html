@@ -1,0 +1,87 @@
+{% load static %}
+<img class="slider-bg" src="{% static 'reserv/assets/img/events-bg.jpg' %}" alt="" data-aos="fade-in">
+<div class="container">
+    <div class="swiper init-swiper" data-aos="fade-up" data-aos-delay="100">
+        <script type="application/json" class="swiper-config">
+            {
+                "loop": true,
+                "speed": 600,
+                "autoplay": {
+                    "delay": 5000
+                },
+                "slidesPerView": "auto",
+                "pagination": {
+                    "el": ".swiper-pagination",
+                    "type": "bullets",
+                    "clickable": true
+                }
+            }
+        </script>
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="row gy-4 event-item">
+                    <div class="col-lg-6">
+                        <img src="{% static 'reserv/assets/img/events-slider/events-slider-1.jpg' %}" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-lg-6 pt-4 pt-lg-0 content">
+                        <h3>Свадьбы</h3>
+                        <p class="fst-italic">
+                            Ресторан Savor - идеальное место для проведения ваших особенных мероприятий.
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check2-circle"></i> <span>Изысканная кухня и индивидуальное меню.</span></li>
+                            <li><i class="bi bi-check2-circle"></i> <span>Комфорт и стильная атмосфера.</span></li>
+                            <li><i class="bi bi-check2-circle"></i> <span>Профессиональный сервис и поддержка.</span></li>
+                        </ul>
+                        <p>
+                            Мы создаем не просто праздники, а теплые и запоминающиеся события, которые оставят только приятные воспоминания у вас и ваших гостей.
+                        </p>
+                    </div>
+                </div>
+            </div><!-- End Slider item -->
+            <div class="swiper-slide">
+                <div class="row gy-4 event-item">
+                    <div class="col-lg-6">
+                        <img src="{% static 'reserv/assets/img/events-slider/events-slider-2.jpg' %}" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-lg-6 pt-4 pt-lg-0 content">
+                        <h3>Дни рождения</h3>
+                        <p class="fst-italic">
+                            Ресторан Savor - идеальное место для проведения ваших особенных мероприятий.
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check2-circle"></i> <span>Изысканная кухня и индивидуальное меню.</span></li>
+                            <li><i class="bi bi-check2-circle"></i> <span>Комфорт и стильная атмосфера.</span></li>
+                            <li><i class="bi bi-check2-circle"></i> <span>Профессиональный сервис и поддержка.</span></li>
+                        </ul>
+                        <p>
+                            Мы создаем не просто праздники, а теплые и запоминающиеся события, которые оставят только приятные воспоминания у вас и ваших гостей.
+                        </p>
+                    </div>
+                </div>
+            </div><!-- End Slider item -->
+            <div class="swiper-slide">
+                <div class="row gy-4 event-item">
+                    <div class="col-lg-6">
+                        <img src="{% static 'reserv/assets/img/events-slider/events-slider-3.jpg' %}" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-lg-6 pt-4 pt-lg-0 content">
+                        <h3>Корпоративы</h3>
+                        <p class="fst-italic">
+                            Ресторан Savor - идеальное место для проведения ваших особенных мероприятий.
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check2-circle"></i> <span>Изысканная кухня и индивидуальное меню.</span></li>
+                            <li><i class="bi bi-check2-circle"></i> <span>Комфорт и стильная атмосфера.</span></li>
+                            <li><i class="bi bi-check2-circle"></i> <span>Профессиональный сервис и поддержка.</span></li>
+                        </ul>
+                        <p>
+                            Мы создаем не просто праздники, а теплые и запоминающиеся события, которые оставят только приятные воспоминания у вас и ваших гостей.
+                        </p>
+                    </div>
+                </div>
+            </div><!-- End Slider item -->
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
