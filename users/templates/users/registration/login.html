@@ -16,10 +16,10 @@
                     {{ form.as_p }}
 
                     <div class="mb-3">
-                        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+                        <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
                     </div>
                     <div>
-                        Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
+                        Нет аккаунта? <a href="{% url 'users:register' %}">Зарегистрироваться</a>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">

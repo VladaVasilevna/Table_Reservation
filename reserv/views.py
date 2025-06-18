@@ -1,3 +1,4 @@
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
@@ -12,12 +13,14 @@ from .models import Reservation
 def home(request):
     booking_form = BookingForm()
     contact_form = ContactForm()
-
+    print("0")
     if request.method == "POST":
         # Определяем, какая форма была отправлена по имени кнопки submit или скрытому полю
         if "booking_submit" in request.POST:
+            print("1")
             booking_form = BookingForm(request.POST)
             if booking_form.is_valid():
+                print("2")
                 send_mail(
                     "Новое бронирование",
                     f"Детали бронирования:\n{booking_form.cleaned_data}",
