@@ -1,62 +1,19 @@
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
-from .forms import BookingForm, ContactForm, RegistrationForm, ReservationForm
-from .models import Reservation
+from .forms import BookingForm, ContactForm, RegistrationForm
+from .models import Table, Reservation
+from django.http import JsonResponse
 
 
 def home(request):
     booking_form = BookingForm()
     contact_form = ContactForm()
-    print("0")
-    if request.method == "POST":
-        # Определяем, какая форма была отправлена по имени кнопки submit или скрытому полю
-        if "booking_submit" in request.POST:
-            print("1")
-            booking_form = BookingForm(request.POST)
-            if booking_form.is_valid():
-                print("2")
-                send_mail(
-                    "Новое бронирование",
-                    f"Детали бронирования:\n{booking_form.cleaned_data}",
-                    settings.DEFAULT_FROM_EMAIL,
-                    [settings.DEFAULT_FROM_EMAIL],
-                    fail_silently=False,
-                )
-                messages.success(
-                    request,
-                    "Ваш запрос на бронирование успешно отправлен! "
-                    "Мы свяжемся с вами в ближайшее время. Спасибо, что выбрали Savor!",
-                )
-                return redirect("home")
-        elif "contact_submit" in request.POST:
-            contact_form = ContactForm(request.POST)
-            if contact_form.is_valid():
-                send_mail(
-                    contact_form.cleaned_data["subject"],
-                    contact_form.cleaned_data["message"],
-                    contact_form.cleaned_data["email"],
-                    [settings.DEFAULT_FROM_EMAIL],
-                )
-                messages.success(
-                    request,
-                    "Ваше сообщение успешно отправлено! Спасибо за обратную связь.",
-                )
-                return redirect("home")
-
-    return render(
-        request,
-        "reserv/index.html",
-        {
-            "booking_form": booking_form,
-            "contact_form": contact_form,
-        },
-    )
+    return render(request, 'reserv/index.html', {'booking_form': booking_form})
 
 
 def register(request):
@@ -73,22 +30,53 @@ def register(request):
     return render(request, "reserv/register.html", {"form": form})
 
 
+def get_tables(request):
+    date = request.GET.get('date')
+    time = request.GET.get('time')
+    guests = request.GET.get('guests')
+    reserved = Reservation.objects.filter(date=date, time=time).values_list('table_id', flat=True)
+    qs = Table.objects.filter(is_active=True)
+    if guests:
+        qs = qs.filter(capacity__gte=int(guests))
+    tables = [{
+        'id': t.id, 'number': t.number, 'shape': t.shape,
+        'x': t.x, 'y': t.y, 'width': t.width, 'height': t.height,
+        'capacity': t.capacity,
+        'reserved': t.id in reserved
+    } for t in qs]
+    return JsonResponse({'tables': tables})
+
+
+@login_required
+def book_table(request):
+    if request.method == 'POST':
+        booking_form = BookingForm(request.POST)
+        if booking_form.is_valid():
+            r = booking_form.save(commit=False)
+            r.user = request.user
+            r.table = get_object_or_404(Table, id=request.POST.get('table_id'))
+            r.status = 'pending'
+            r.save()
+            send_mail(
+                'Бронирование от Savor',
+                f"Добрый день, {r.name}!\nВы забронировали столик №{r.table.number} на {r.date} {r.time} на {r.guests} персон.\nВ ближайшее время наш администратор свяжется с Вами для подтверждения брони и уточнения деталей.\nСпасибо, что выбрали наш ресторан!",
+                'noreply@savor.com',
+                [r.email]
+            )
+            messages.success(request, 'Бронь успешно создана!')
+            return redirect('home')
+    return redirect('home')
+
+
 @login_required
 def profile(request):
-    reservations = Reservation.objects.filter(user=request.user)
-    return render(request, "reserv/profile.html", {"reservations": reservations})
+    reservations = Reservation.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'reserv/profile.html', {'reservations': reservations})
 
 
 @login_required
-def create_reservation(request):
-    if request.method == "POST":
-        form = ReservationForm(request.POST)
-        if form.is_valid():
-            reservation = form.save(commit=False)
-            reservation.user = request.user
-            reservation.save()
-            messages.success(request, "Бронь успешно создана!")
-            return redirect("profile")
-    else:
-        form = ReservationForm()
-    return render(request, "reserv/reservation.html", {"form": form})
+def cancel_booking(request, pk):
+    r = get_object_or_404(Reservation, pk=pk, user=request.user)
+    r.status = 'canceled'
+    r.save()
+    return redirect('profile')

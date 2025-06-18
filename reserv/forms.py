@@ -5,82 +5,58 @@ from phonenumber_field.formfields import PhoneNumberField
 from .models import Reservation
 
 
-class BookingForm(forms.Form):
-    name = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(
-            attrs={
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ['name', 'email', 'phone', 'date', 'time', 'guests', 'comment']
+        widgets = {
+            'name': forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Введите имя",
                 "id": "name",
                 "required": True,
-            }
-        ),
-    )
-    email = forms.EmailField(
-        widget=forms.EmailInput(
-            attrs={
+            }),
+            'email': forms.EmailInput(attrs={
                 "class": "form-control",
                 "placeholder": "Введите email",
                 "id": "email",
                 "required": True,
-            }
-        )
-    )
-    phone = forms.CharField(
-        max_length=20,
-        widget=forms.TextInput(
-            attrs={
+            }),
+            'phone': forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Введите телефон",
                 "id": "phone",
                 "required": True,
-            }
-        ),
-    )
-    date = forms.DateField(
-        widget=forms.DateInput(
-            attrs={
+            }),
+            'date': forms.DateInput(attrs={
                 "class": "form-control",
                 "placeholder": "Дата",
                 "id": "date",
                 "type": "date",
                 "required": True,
-            }
-        )
-    )
-    time = forms.TimeField(
-        widget=forms.TimeInput(
-            attrs={
+                "readonly": True  # если ты хочешь запретить изменение
+            }),
+            'time': forms.TimeInput(attrs={
                 "class": "form-control",
                 "placeholder": "Время",
                 "id": "time",
                 "type": "time",
                 "required": True,
-            }
-        )
-    )
-    people = forms.IntegerField(
-        min_value=1,
-        widget=forms.NumberInput(
-            attrs={
+                "readonly": True
+            }),
+            'guests': forms.NumberInput(attrs={
                 "class": "form-control",
                 "placeholder": "Кол-во гостей",
                 "id": "people",
                 "required": True,
-            }
-        ),
-    )
-    message = forms.CharField(
-        required=False,
-        widget=forms.Textarea(
-            attrs={
+                "min": 1,
+            }),
+            'comment': forms.Textarea(attrs={
                 "class": "form-control",
                 "placeholder": "Комментарий",
                 "rows": 5,
-            }
-        ),
-    )
+            }),
+        }
 
 
 class ContactForm(forms.Form):

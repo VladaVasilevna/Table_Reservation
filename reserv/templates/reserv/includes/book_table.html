@@ -2,44 +2,43 @@
 <!-- Section Title -->
 <div class="container section-title" data-aos="fade-up">
     <h2>Бронирование</h2>
-    <div><span>Book a</span> <span class="description-title">Table</span></div>
+    <div><span>Table</span> <span class="description-title">Reservation</span></div>
 </div><!-- End Section Title -->
 
 <div class="container">
     <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
-        <div class="col-lg-4 reservation-img" style="background-image: url('{% static 'reserv/assets/img/reservation.jpg' %}');"></div>
-        <div class="col-lg-8 d-flex align-items-center reservation-form-bg" data-aos="fade-up" data-aos-delay="200">
+        <form id="booking-choose-form">
+            <div class="row">
+                <div class="col">{{ form.date }}</div>
+                <div class="col">{{ form.time }}</div>
+                <div class="col">{{ form.guests }}</div>
+            </div>
+        </form>
+        <!-- Контейнер схемы -->
+        <div id="hall-map" style="position: relative;">
+          <img src="{% static 'images/схема_зала.png' %}" alt="Схема зала">
+        </div>
 
-            <form method="post" action="{% url 'home' %}" class="php-email-form">
+        <!-- Модальное окно бронирования -->
+        <div id="booking-modal" class="modal"><div class="modal-content">
+            <span class="close">&times;</span><h4 id="modal-table-num"></h4>
+            <form method="post" action="{% url 'book_table' %}">
                 {% csrf_token %}
-                <div class="row gy-4">
-                    <div class="col-lg-4 col-md-6">
-                        {{ form.name }}
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        {{ form.email }}
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        {{ form.phone }}
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        {{ form.date }}
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        {{ form.time }}
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        {{ form.people }}
-                    </div>
-                </div>
-                <div class="form-group mt-3">
-                    {{ form.message }}
-                </div>
-                <div class="text-center mt-3">
-                    <button type="submit" name="booking_submit">Забронировать</button>
-                </div>
+                <input type="hidden" name="table_id" id="modal-table-id">
+                {{ form.as_p }}
+                <button type="submit">Забронировать</button>
             </form>
+        </div></div>
 
-        </div><!-- End Reservation Form -->
+
+        <!-- Модальное окно авторизации -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="this.closest('.modal').style.display='none';">&times;</span>
+                <p>Для бронирования необходимо авторизоваться.</p>
+                <a href="{% url 'users:login' %}" class="btn btn-primary">Войти</a>
+                <a href="{% url 'users:register' %}" class="btn btn-secondary">Зарегистрироваться</a>
+            </div>
+        </div>
     </div>
 </div>
