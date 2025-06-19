@@ -7,7 +7,11 @@ class Table(models.Model):
 
     number = models.PositiveIntegerField(unique=True, verbose_name="Номер столика")
     capacity = models.PositiveIntegerField(verbose_name="Вместимость (чел)")
-    shape = models.CharField(max_length=10, choices=[('round', 'Круглый'), ('rect', 'Прямоугольный')], verbose_name="Форма столика")
+    shape = models.CharField(
+        max_length=10,
+        choices=[("round", "Круглый"), ("rect", "Прямоугольный")],
+        verbose_name="Форма столика",
+    )
     x = models.IntegerField(verbose_name="Координата по X")  # координата на схеме
     y = models.IntegerField(verbose_name="Координата по Y")
     width = models.IntegerField(verbose_name="Ширина кнопки")
@@ -29,10 +33,10 @@ class Reservation(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
     table = models.ForeignKey(
-        'Table',
+        "Table",
         on_delete=models.CASCADE,
-        related_name='reservations',
-        verbose_name="Столик"
+        related_name="reservations",
+        verbose_name="Столик",
     )
     name = models.CharField(max_length=100, verbose_name="Имя")
     email = models.EmailField(verbose_name="Email")

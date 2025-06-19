@@ -1,6 +1,183 @@
 {% load static %}
 <!-- Section Title -->
-<div class="container section-title" data-aos="fade-up">
+
+<style>
+    /* Стили модалки авторизации */
+    .auth-modal-content {
+      text-align: center;
+      padding-top: 40px;
+    }
+
+    /* Эмблема ресторана */
+    .modal-logo {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background-color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sitename {
+      color: white;
+      margin: 0;
+    }
+
+    /* Текст под эмблемой */
+    .auth-text {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    /* Кнопки */
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .modal-buttons .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .modal-buttons .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .modal-buttons .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .modal-buttons .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .modal-buttons .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    .table-button {
+    position: absolute;
+    border: none;
+    background-color: rgba(128, 128, 128, 0.3); /* полупрозрачный серый */
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    }
+
+    .table-button:hover {
+      background-color: rgba(0, 0, 0, 0.6); /* менее прозрачный чёрный при наведении */
+      color: white; /* цифры меняются на белый цвет при наведении*/
+    }
+
+    .table-round {
+        border-radius: 50%;
+    }
+
+    /* Фон модального окна (затемнённый слой) */
+    .modal {
+      display: none; /* скрыто по умолчанию */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;  /* занимает весь экран */
+      height: 100vh; /* занимает весь экран */
+      background-color: rgba(0, 0, 0, 0.5); /* затемнение */
+      align-items: center;    /* вертикальное центрирование */
+      justify-content: center; /* горизонтальное центрирование */
+      z-index: 1000;          /* поверх всего */
+    }
+
+    /* Содержимое модального окна */
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px; /* ширина окна */
+      width: 90%;       /* адаптивная ширина */
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    /* Только для модального окна бронирования */
+    .booking-modal-content {
+      max-width: 700px;
+    }
+
+    .booking-form {
+      margin-top: 10px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* две колонки равной ширины */
+      gap: 15px 20px; /* расстояние между строками и колонками */
+      align-items: center;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Комментарий — занимает всю ширину (две колонки) */
+    .comment-group {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    /* textarea комментария */
+    .comment-group textarea {
+      min-height: 70px;
+    }
+
+    .close {
+      position: absolute;
+      top: 0;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      user-select: none; /* Чтобы нельзя было выделить крестик */
+    }
+
+    .close:hover {
+      color: #ff0000; /* При наведении покрасить крестик */
+    }
+</style>
+
+<div class="container section-title" data-aos="fade-up" data-auth="{{ request.user.is_authenticated|yesno:'true,false' }}">
     <h2>Бронирование</h2>
     <div><span>Table</span> <span class="description-title">Reservation</span></div>
 </div><!-- End Section Title -->
@@ -8,26 +185,82 @@
 <div class="container">
     <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
         <form id="booking-choose-form">
-            <div class="row">
-                <div class="col">{{ form.date }}</div>
-                <div class="col">{{ form.time }}</div>
-                <div class="col">{{ form.guests }}</div>
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    {{ form.date }}
+                </div>
+                <div class="col-auto">
+                    {{ form.time }}
+                </div>
             </div>
         </form>
+
         <!-- Контейнер схемы -->
         <div id="hall-map" style="position: relative;">
-          <img src="{% static 'images/схема_зала.png' %}" alt="Схема зала">
+            <img src="{% static 'images/схема_зала.png' %}" alt="Схема зала">
+            <!-- Прямоугольные столы -->
+          <button class="table-button table-rect" style="left: 103px; top: 43px; width: 59px; height: 118px;" title="Вместимость 4 персоны">1</button>
+          <button class="table-button table-rect" style="left: 103px; top: 221px; width: 59px; height: 59px;" title="Вместимость 2 персоны">2</button>
+          <button class="table-button table-rect" style="left: 366px; top: 43px; width: 59px; height: 118px;" title="Вместимость 4 персоны">3</button>
+          <button class="table-button table-rect" style="left: 366px; top: 222px; width: 59px; height: 59px;" title="Вместимость 2 персоны">4</button>
+          <button class="table-button table-rect" style="left: 366px; top: 307px; width: 58px; height: 60px;" title="Вместимость 2 персоны">5</button>
+          <button class="table-button table-rect" style="left: 565px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">6</button>
+          <button class="table-button table-rect" style="left: 768px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">7</button>
+          <button class="table-button table-rect" style="left: 972px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">8</button>
+          <button class="table-button table-rect" style="left: 676px; top: 587px; width: 60px; height: 60px;" title="Вместимость 3 персоны">12</button>
+          <button class="table-button table-rect" style="left: 854px; top: 588px; width: 59px; height: 58px;" title="Вместимость 3 персоны">13</button>
+
+          <!-- Круглые столы -->
+          <button class="table-button table-round" style="left: 587px; top: 295px; width: 66px; height: 66px;" title="Вместимость 4 персоны">9</button>
+          <button class="table-button table-round" style="left: 731px; top: 326px; width: 134px; height: 134px;" title="Вместимость 10 персон">10</button>
+          <button class="table-button table-round" style="left: 942px; top: 295px; width: 66px; height: 66px;" title="Вместимость 4 персоны">11</button>
         </div>
 
         <!-- Модальное окно бронирования -->
-        <div id="booking-modal" class="modal"><div class="modal-content">
+        <div id="booking-modal" class="modal"><div class="modal-content booking-modal-content">
             <span class="close">&times;</span><h4 id="modal-table-num"></h4>
-            <form method="post" action="{% url 'book_table' %}">
-                {% csrf_token %}
-                <input type="hidden" name="table_id" id="modal-table-id">
-                {{ form.as_p }}
-                <button type="submit">Забронировать</button>
-            </form>
+            <form method="post" action="{% url 'book_table' %}" class="booking-form">
+  {% csrf_token %}
+  <input type="hidden" name="table_id" id="modal-table-id">
+
+  <div class="form-grid">
+    <div class="form-group">
+      {{ form.name.label_tag }}
+      {{ form.name }}
+    </div>
+    <div class="form-group">
+      {{ form.guests.label_tag }}
+      {{ form.guests }}
+    </div>
+
+    <div class="form-group">
+      {{ form.email.label_tag }}
+      {{ form.email }}
+    </div>
+    <div class="form-group">
+      {{ form.phone.label_tag }}
+      {{ form.phone }}
+    </div>
+
+    <div class="form-group">
+      {{ form.date.label_tag }}
+      {{ form.date }}
+    </div>
+    <div class="form-group">
+      {{ form.time.label_tag }}
+      {{ form.time }}
+    </div>
+
+    <div class="form-group comment-group">
+      {{ form.comment.label_tag }}
+      {{ form.comment }}
+    </div>
+  </div>
+    <div class="d-grid gap-2">
+  <button type="submit" class="btn btn-warning" style="margin-top: 20px">Забронировать</button>
+        </div>
+</form>
+
         </div></div>
 
 
@@ -35,10 +268,138 @@
         <div id="auth-modal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="this.closest('.modal').style.display='none';">&times;</span>
-                <p>Для бронирования необходимо авторизоваться.</p>
-                <a href="{% url 'users:login' %}" class="btn btn-primary">Войти</a>
-                <a href="{% url 'users:register' %}" class="btn btn-secondary">Зарегистрироваться</a>
+
+                <div class="modal-logo">
+                  <h1 class="sitename">Savor</h1>
+                </div>
+
+                <p class="auth-text">Для бронирования необходимо авторизоваться</p>
+                <div class="modal-buttons">
+                    <a href="{% url 'users:login' %}" class="btn btn-success">Войти</a>
+                    <a href="{% url 'users:register' %}" class="btn btn-warning">Зарегистрироваться</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+  const container = document.querySelector('.container[data-auth]');
+  const isAuthenticated = container?.dataset.auth === 'true';
+  const tableButtons = document.querySelectorAll('.table-button');
+
+  const dateInput = document.querySelector('#booking-choose-form [name="date"]');
+  const timeInput = document.querySelector('#booking-choose-form [name="time"]');
+
+  function fetchTablesStatus() {
+    const date = dateInput.value;
+    const time = timeInput.value;
+
+    if (!date || !time) return;
+
+    fetch(`/api/tables/?date=${date}&time=${time}`)
+      .then(response => response.json())
+      .then(data => {
+        const tables = data.tables;
+
+        tableButtons.forEach(button => {
+          const tableId = parseInt(button.textContent.trim());
+          const tableData = tables.find(t => t.number === tableId);
+
+          if (tableData?.reserved) {
+            button.disabled = true;
+            button.style.opacity = '0.5';
+            button.style.cursor = 'not-allowed';
+            button.title = `Стол №${tableData.number} (уже забронирован, вместимость ${tableData.capacity})`;
+          } else {
+            button.disabled = false;
+            button.style.opacity = '';
+            button.style.cursor = '';
+            button.title = `Вместимость ${tableData.capacity} персон`;
+          }
+        });
+      });
+  }
+
+  // Обработка клика по кнопке стола
+  tableButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const tableId = button.textContent.trim();
+      const date = dateInput.value;
+      const time = timeInput.value;
+
+      if (!date || !time) {
+        alert('Пожалуйста, выберите дату и время бронирования.');
+        return;
+      }
+
+      if (!isAuthenticated) {
+        document.getElementById('auth-modal').style.display = 'block';
+        return;
+      }
+
+
+      if (!date || !time) {
+        alert('Пожалуйста, выберите дату и время бронирования.');
+        return;
+      }
+
+      if (!isAuthenticated) {
+        document.getElementById('auth-modal').style.display = 'block';
+        return;
+      }
+
+      // Проверка на прошлое время
+      const now = new Date();
+      const selectedDateTime = new Date(`${date}T${time}`);
+      if (selectedDateTime < now) {
+        alert('Выбранная дата и время уже прошли. Пожалуйста, выберите другую дату и время.');
+        return;
+      }
+
+      // Проверка на допустимый интервал времени: 11:00–21:00
+      const [hours, minutes] = time.split(':').map(Number);
+
+      // Преобразуем в минуты с начала дня
+      const selectedMinutes = hours * 60 + minutes;
+      const openMinutes = 11 * 60;   // 11:00
+      const closeMinutes = 22 * 60;  // 22:00
+
+      if (selectedMinutes < openMinutes) {
+        alert('Ресторан открывается в 11:00. Пожалуйста, выберите другое время.')
+        return;
+      } else if (selectedMinutes > closeMinutes) {
+        alert('Кухня принимает заказы до 22:00. Пожалуйста, выберите другое время.');
+        return;
+      }
+
+      // Показ модалки бронирования
+      document.getElementById('booking-modal').style.display = 'flex';
+      document.getElementById('modal-table-id').value = tableId;
+      const modalTitle = document.getElementById('modal-table-num');
+modalTitle.textContent = `Бронирование столика №${tableId}`;
+modalTitle.style.textAlign = 'center';
+    });
+  });
+
+  // Обновление доступности столов при изменении даты/времени
+  [dateInput, timeInput].forEach(input => {
+    input.addEventListener('change', fetchTablesStatus);
+  });
+
+  // Закрытие модалок по крестику
+  document.querySelectorAll('.modal .close').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.modal').style.display = 'none';
+    });
+  });
+
+  // Закрытие модалки по фону
+  window.addEventListener('click', (event) => {
+    document.querySelectorAll('.modal').forEach(modal => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+</script>

@@ -2,12 +2,8 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, reverse_lazy
 
-from users.views import (
-    ProfileUpdateView,
-    ProfileView,
-    UserCreateView,
-    email_verification,
-)
+from users.views import (ProfileUpdateView, ProfileView, UserCreateView,
+                         email_verification)
 
 app_name = "users"
 

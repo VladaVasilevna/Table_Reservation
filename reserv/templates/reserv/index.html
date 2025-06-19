@@ -38,7 +38,7 @@
   ======================================================== -->
 </head>
 
-<body class="index-page">
+<body data-auth="{{ request.user.is_authenticated|yesno:'true,false' }}" class="index-page">
     <header id="header" class="header fixed-top">
         {% include 'reserv/includes/header.html' %}
     </header>
@@ -102,6 +102,5 @@
 
     <!-- Main JS File -->
     <script src="{% static 'reserv/assets/js/main.js' %}"></script>
-    <script src="{% static 'reserv/assets/js/book_table.js' %}"></script>
 </body>
 </html>
