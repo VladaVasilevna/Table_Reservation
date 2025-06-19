@@ -16,10 +16,15 @@ class StyleFormMixin:
                 field.widget.attrs["class"] = "form-control"
 
 
-class UserRegisterForm(StyleFormMixin, UserCreationForm):
+class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ("email", "password1", "password2")
+        fields = ['email', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class UserProfileForm(StyleFormMixin, ModelForm):

@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+from config import settings
 from .forms import BookingForm, ContactForm, RegistrationForm
 from .models import Reservation, Table
 
@@ -13,20 +14,6 @@ def home(request):
     booking_form = BookingForm()
     contact_form = ContactForm()
     return render(request, "reserv/index.html", {"booking_form": booking_form})
-
-
-def register(request):
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password"])
-            user.save()
-            login(request, user)
-            return redirect("home")
-    else:
-        form = RegistrationForm()
-    return render(request, "reserv/register.html", {"form": form})
 
 
 def get_tables(request):
@@ -69,7 +56,7 @@ def book_table(request):
                 f"Вы забронировали столик №{r.table.number} на {r.date} {r.time} на {r.guests} персон."
                 f"В ближайшее время наш администратор свяжется с Вами для подтверждения брони и уточнения деталей."
                 f"Спасибо, что выбрали наш ресторан!",
-                "noreply@savor.com",
+                settings.DEFAULT_FROM_EMAIL,
                 [r.email],
             )
             messages.success(request, "Бронь успешно создана!")

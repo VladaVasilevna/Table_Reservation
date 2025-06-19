@@ -5,7 +5,7 @@
     <div class="row justify-content-center mt-4">
         <div class="col-md-6">
             <div class="card">
-                <h3 class="card-header text-center">Профиль пользователя</h3>
+                <h3 class="card-header text-center">Профиль гостя</h3>
                 <div class="card-body">
                     <p><strong>Email:</strong> {{ user.email }}</p>
                     {% if user.avatar %}
@@ -13,15 +13,15 @@
                     {% else %}
                         <img src="{% static 'images/default_avatar.png' %}" alt="Аватар по умолчанию" class="img-thumbnail" style="max-width: 150px;">
                     {% endif %}
-                    <p><strong>Имя:</strong> {{ user.get_full_name|default:"Не указано" }}</p>
-                    <p><strong>Телефон:</strong> {{ user.profile.phone_number|default:"Не указан" }}</p>
-                    <p><strong>Страна:</strong> {{ user.profile.country|default:"Не указана" }}</p>
+                    <p><strong>Имя:</strong> {{ user.full_name|default:"Не указано" }}</p>
+                    <p><strong>Телефон:</strong> {{ user.phone_number|default:"Не указан" }}</p>
+                    <p><strong>Страна:</strong> {{ user.country|default:"Не указана" }}</p>
                     <p><strong>Статус:</strong> {{ user.get_role_display|default:"Пользователь" }}</p>
 
                     <div class="d-grid gap-2 mt-4">
-                        <a href="{% url 'users:profile_edit' %}" class="btn btn-primary">Редактировать профиль</a>
-                        <a href="{% url 'users:password_change' %}" class="btn btn-warning">Изменить пароль</a>
-                        <a href="{% url 'home' %}" class="btn btn-secondary">На главную</a>
+                        <a href="{% url 'users:profile_edit' %}" class="btn btn-warning">Редактировать профиль</a>
+                        <a href="{% url 'users:password_change' %}" class="btn btn-secondary">Изменить пароль</a>
+                        <a href="{% url 'home' %}" class="btn btn-dark">На главную</a>
                     </div>
                 </div>
             </div>

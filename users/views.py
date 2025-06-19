@@ -10,6 +10,7 @@ from django.views.generic import CreateView, DetailView, UpdateView
 from config.settings import EMAIL_HOST_USER
 from users.forms import UserProfileForm, UserRegisterForm
 from users.models import User
+from django.db import transaction
 
 
 class UserCreateView(CreateView):
@@ -18,20 +19,24 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy("users:login")
 
     def form_valid(self, form):
-        response = super().form_valid(form)  # сохраняет объект в self.object
-        self.object.is_active = False
-        token = secrets.token_hex(16)
-        self.object.token = token
-        self.object.save()
-        host = self.request.get_host()
-        url = f"http://{host}/users/email-confirm/{token}/"
-        send_mail(
-            subject="Подтверждение почты",
-            message=f"Привет! Перейди по ссылке для подтверждения почты {url}",
-            from_email=EMAIL_HOST_USER,
-            recipient_list=[self.object.email],
-        )
-        return response
+        try:
+            with transaction.atomic():
+                response = super().form_valid(form)
+                self.object.is_active = False
+                self.object.token = secrets.token_hex(16)
+                self.object.save()
+                host = self.request.get_host()
+                url = f"http://{host}/users/email-confirm/{self.object.token}/"
+                send_mail(
+                    subject="Подтверждение почты",
+                    message=f"Привет! Перейди по ссылке для подтверждения почты {url}",
+                    from_email=EMAIL_HOST_USER,
+                    recipient_list=[self.object.email],
+                )
+                return response
+        except Exception as e:
+            form.add_error(None, "Ошибка отправки письма. Попробуйте позже.")
+            return self.form_invalid(form)
 
 
 def email_verification(request, token):

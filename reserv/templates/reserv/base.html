@@ -31,7 +31,7 @@
 
 </head>
 
-<body>
+<body class="dark-background d-flex flex-column min-vh-100">
     <header class="header fixed-top">
         <div class="topbar d-flex align-items-center">
             <div class="container d-flex justify-content-end justify-content-md-between">
@@ -52,10 +52,10 @@
                                     <img src="{{ user.avatar.url }}" alt="Аватар" class="rounded-circle me-2" width="32" height="32">
                                 {% else %}
                                     <div class="avatar-placeholder rounded-circle me-2 bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                        {{ user.username }}
+                                        {{ user.full_name }}
                                     </div>
                                 {% endif %}
-                                <span class="me-1">{{ user.username|default:user.email }}</span>
+                                <span class="me-1">{{ user.full_name|default:user.email }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a></li>
@@ -86,41 +86,41 @@
         </div>
 
     </header>
-    <main class="main">
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center py-5">
+
+        {% block content %}
         <section class="hero section dark-background">
             <div class="carousel slide carousel-fade" >
-
                 <div class="pt-5 container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <div class="card p-4">
-                        {% if is_login %}
-                            <h3 class="mb-4 text-center text-dark">Вход в аккаунт</h3>
-                        {% else %}
-                            <h3 class="mb-4 text-center text-dark">Регистрация</h3>
-                        {% endif %}
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="card p-4">
+                                {% if is_login %}
+                                    <h3 class="mb-4 text-center text-dark">Вход в аккаунт</h3>
+                                {% else %}
+                                    <h3 class="mb-4 text-center text-dark">Регистрация</h3>
+                                {% endif %}
 
-                        <form method="post" novalidate>
-                            {% csrf_token %}
-                            {% for field in form %}
-                                <div class="mb-3">
-                                    {{ field.label_tag }}
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <div class="text-danger small">{{ field.errors }}</div>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                            <button type="submit" class="btn btn-primary w-100">Войти</button>
-                        </form>
+                                <form method="post" novalidate>
+                                    {% csrf_token %}
+                                    {% for field in form %}
+                                        <div class="mb-3">
+                                            {{ field.label_tag }}
+                                            {{ field }}
+                                            {% if field.errors %}
+                                                <div class="text-danger small">{{ field.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                    <button type="submit" class="btn btn-primary w-100">Войти</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-            </div>
         </section><!-- /Hero Section -->
-
+        {% endblock %}
     </main>
     <footer id="footer" class="footer dark-background">
       {% include 'reserv/includes/footer.html' %}

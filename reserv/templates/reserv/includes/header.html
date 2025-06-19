@@ -15,7 +15,7 @@
                         {% else %}
                             <i class="bi bi-person-circle me-2"></i>
                         {% endif %}
-                        <span>{{ user.username|default:user.email }}</span>
+                        <span>{{ user.full_name|default:user.email }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a></li>
