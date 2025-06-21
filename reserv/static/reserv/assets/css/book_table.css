@@ -80,6 +80,18 @@
       color: white; /* цифры меняются на белый цвет при наведении*/
     }
 
+    /* Стили для забронированных столов */
+    .table-button.reserved {
+      background-color: rgba(220, 53, 69, 0.6); /* прозрачно красный */
+      color: white;
+      cursor: not-allowed;
+    }
+
+    .table-button.reserved:hover {
+      background-color: rgba(220, 53, 69, 0.8); /* более насыщенный красный при наведении */
+      color: white;
+    }
+
     .table-round {
         border-radius: 50%;
     }
@@ -149,6 +161,25 @@
       font-size: 14px;
       font-family: inherit;
       resize: vertical;
+    }
+
+    /* Стили для read-only полей */
+    .form-group input[readonly] {
+      background-color: #f8f9fa;
+      color: #6c757d;
+      cursor: not-allowed;
+      border-color: #dee2e6;
+    }
+
+    .form-group input[readonly]:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: #dee2e6;
+    }
+
+    /* Подсказка для read-only полей */
+    .form-group input[readonly]::placeholder {
+      color: #adb5bd;
     }
 
     /* textarea комментария */

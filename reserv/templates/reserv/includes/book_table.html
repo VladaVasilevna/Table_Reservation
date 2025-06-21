@@ -2,110 +2,129 @@
 
 <link href="{% static 'reserv/assets/css/book_table.css' %}" rel="stylesheet">
 <!-- Section Title -->
-<div class="container section-title" data-aos="fade-up" data-auth="{{ request.user.is_authenticated|yesno:'true,false' }}">
-    <h2>Бронирование</h2>
-    <div><span>Table</span> <span class="description-title">Reservation</span></div>
+<div class="container section-title" data-aos="fade-up"
+	data-auth="{{ request.user.is_authenticated|yesno:'true,false' }}">
+	<h2>Бронирование</h2>
+	<div><span>Table</span> <span class="description-title">Reservation</span></div>
 </div><!-- End Section Title -->
 
 <div class="container">
-    <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
-        <form id="booking-choose-form">
-            <div class="row justify-content-center">
-                <div class="col-auto">
-                    {{ form.date }}
-                </div>
-                <div class="col-auto">
-                    {{ form.time }}
-                </div>
-            </div>
-        </form>
+	<div class="row g-0" data-aos="fade-up" data-aos-delay="100">
+		<form id="booking-choose-form">
+			<div class="row justify-content-center">
+				<div class="col-auto">
+					{{ form.date }}
+				</div>
+				<div class="col-auto">
+					{{ form.time }}
+				</div>
+			</div>
+		</form>
 
-        <!-- Контейнер схемы -->
-        <div id="hall-map" style="position: relative;">
-            <img src="{% static 'images/схема_зала.png' %}" alt="Схема зала">
-            <!-- Прямоугольные столы -->
-          <button class="table-button table-rect" data-table-id="1" style="left: 103px; top: 43px; width: 59px; height: 118px;" title="Вместимость 4 персоны">1</button>
-          <button class="table-button table-rect" data-table-id="2" style="left: 103px; top: 221px; width: 59px; height: 59px;" title="Вместимость 2 персоны">2</button>
-          <button class="table-button table-rect" data-table-id="3" style="left: 366px; top: 43px; width: 59px; height: 118px;" title="Вместимость 4 персоны">3</button>
-          <button class="table-button table-rect" data-table-id="4" style="left: 366px; top: 222px; width: 59px; height: 59px;" title="Вместимость 2 персоны">4</button>
-          <button class="table-button table-rect" data-table-id="5" style="left: 366px; top: 307px; width: 58px; height: 60px;" title="Вместимость 2 персоны">5</button>
-          <button class="table-button table-rect" data-table-id="6" style="left: 565px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">6</button>
-          <button class="table-button table-rect" data-table-id="7" style="left: 768px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">7</button>
-          <button class="table-button table-rect" data-table-id="8" style="left: 972px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">8</button>
-          <button class="table-button table-rect" data-table-id="12" style="left: 676px; top: 587px; width: 60px; height: 60px;" title="Вместимость 3 персоны">12</button>
-          <button class="table-button table-rect" data-table-id="13" style="left: 854px; top: 588px; width: 59px; height: 58px;" title="Вместимость 3 персоны">13</button>
+		<!-- Контейнер схемы -->
+		<div id="hall-map" style="position: relative;">
+			<img src="{% static 'images/схема_зала.png' %}" alt="Схема зала">
+			<!-- Прямоугольные столы -->
+			<button class="table-button table-rect" data-table-id="1"
+				style="left: 103px; top: 43px; width: 59px; height: 118px;" title="Вместимость 4 персоны">1</button>
+			<button class="table-button table-rect" data-table-id="2"
+				style="left: 103px; top: 221px; width: 59px; height: 59px;" title="Вместимость 2 персоны">2</button>
+			<button class="table-button table-rect" data-table-id="3"
+				style="left: 366px; top: 43px; width: 59px; height: 118px;" title="Вместимость 4 персоны">3</button>
+			<button class="table-button table-rect" data-table-id="4"
+				style="left: 366px; top: 222px; width: 59px; height: 59px;" title="Вместимость 2 персоны">4</button>
+			<button class="table-button table-rect" data-table-id="5"
+				style="left: 366px; top: 307px; width: 58px; height: 60px;" title="Вместимость 2 персоны">5</button>
+			<button class="table-button table-rect" data-table-id="6"
+				style="left: 565px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">6</button>
+			<button class="table-button table-rect" data-table-id="7"
+				style="left: 768px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">7</button>
+			<button class="table-button table-rect" data-table-id="8"
+				style="left: 972px; top: 73px; width: 59px; height: 118px;" title="Вместимость 4 персоны">8</button>
+			<button class="table-button table-rect" data-table-id="12"
+				style="left: 676px; top: 587px; width: 60px; height: 60px;" title="Вместимость 3 персоны">12</button>
+			<button class="table-button table-rect" data-table-id="13"
+				style="left: 854px; top: 588px; width: 59px; height: 58px;" title="Вместимость 3 персоны">13</button>
 
-          <!-- Круглые столы -->
-          <button class="table-button table-round" data-table-id="9" style="left: 587px; top: 295px; width: 66px; height: 66px;" title="Вместимость 4 персоны">9</button>
-          <button class="table-button table-round" data-table-id="10" style="left: 731px; top: 326px; width: 134px; height: 134px;" title="Вместимость 10 персон">10</button>
-          <button class="table-button table-round" data-table-id="11" style="left: 942px; top: 295px; width: 66px; height: 66px;" title="Вместимость 4 персоны">11</button>
-        </div>
+			<!-- Круглые столы -->
+			<button class="table-button table-round" data-table-id="9"
+				style="left: 587px; top: 295px; width: 66px; height: 66px;" title="Вместимость 4 персоны">9</button>
+			<button class="table-button table-round" data-table-id="10"
+				style="left: 731px; top: 326px; width: 134px; height: 134px;" title="Вместимость 10 персон">10</button>
+			<button class="table-button table-round" data-table-id="11"
+				style="left: 942px; top: 295px; width: 66px; height: 66px;" title="Вместимость 4 персоны">11</button>
+		</div>
 
-        <!-- Модальное окно бронирования -->
-        <div id="booking-modal" class="modal"><div class="modal-content booking-modal-content">
-            <span class="close">&times;</span><h4 id="modal-table-num"></h4>
-            <form method="post" action="{% url 'book_table' %}" class="booking-form">
-  {% csrf_token %}
-  <input type="hidden" name="table_id" id="modal-table-id">
+		<!-- Модальное окно бронирования -->
+		<div id="booking-modal" class="modal">
+			<div class="modal-content booking-modal-content">
+				<span class="close">&times;</span>
+				<h4 id="modal-table-num"></h4>
+				<form method="post" action="{% url 'book_table' %}" class="booking-form">
+					{% csrf_token %}
+					<input type="hidden" name="table_id" id="modal-table-id">
 
-  <div class="form-grid">
-    <div class="form-group">
-      {{ form.name.label_tag }}
-      {{ form.name }}
-    </div>
-    <div class="form-group">
-      {{ form.guests.label_tag }}
-      {{ form.guests }}
-    </div>
+					<div class="form-grid">
+						<div class="form-group">
+							{{ modal_form.name.label_tag }}
+							{{ modal_form.name }}
+						</div>
+						<div class="form-group">
+							{{ modal_form.guests.label_tag }}
+							{{ modal_form.guests }}
+						</div>
 
-    <div class="form-group">
-      {{ form.email.label_tag }}
-      {{ form.email }}
-    </div>
-    <div class="form-group">
-      {{ form.phone.label_tag }}
-      {{ form.phone }}
-    </div>
+						<div class="form-group">
+							{{ modal_form.email.label_tag }}
+							{{ modal_form.email }}
+						</div>
+						<div class="form-group">
+							{{ modal_form.phone.label_tag }}
+							{{ modal_form.phone }}
+						</div>
 
-    <div class="form-group">
-      {{ form.date.label_tag }}
-      {{ form.date }}
-    </div>
-    <div class="form-group">
-      {{ form.time.label_tag }}
-      {{ form.time }}
-    </div>
+						<div class="form-group">
+							{{ modal_form.date.label_tag }}
+							{{ modal_form.date }}
+							<small class="text-muted">Дата выбрана выше</small>
+						</div>
+						<div class="form-group">
+							{{ modal_form.time.label_tag }}
+							{{ modal_form.time }}
+							<small class="text-muted">Время выбрано выше</small>
+						</div>
 
-    <div class="form-group comment-group">
-      {{ form.comment.label_tag }}
-      {{ form.comment }}
-    </div>
-  </div>
-    <div class="d-grid gap-2">
-  <button type="submit" class="btn btn-warning" style="margin-top: 20px">Забронировать</button>
-        </div>
-</form>
+						<div class="form-group comment-group">
+							{{ modal_form.comment.label_tag }}
+							{{ modal_form.comment }}
+						</div>
+					</div>
+					<div class="d-grid gap-2">
+						<button type="submit" class="btn btn-warning" style="margin-top: 20px">Забронировать</button>
+					</div>
+				</form>
 
-        </div></div>
+			</div>
+		</div>
 
 
-        <!-- Модальное окно авторизации -->
-        <div id="auth-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="this.closest('.modal').style.display='none';">&times;</span>
+		<!-- Модальное окно авторизации -->
+		<div id="auth-modal" class="modal">
+			<div class="modal-content">
+				<span class="close" onclick="this.closest('.modal').style.display='none';">&times;</span>
 
-                <div class="modal-logo">
-                  <h1 class="sitename">Savor</h1>
-                </div>
+				<div class="modal-logo">
+					<h1 class="sitename">Savor</h1>
+				</div>
 
-                <p class="auth-text">Для бронирования необходимо авторизоваться</p>
-                <div class="modal-buttons">
-                    <a href="{% url 'users:login' %}" class="btn btn-dark">Войти</a>
-                    <a href="{% url 'users:register' %}" class="btn btn-warning">Зарегистрироваться</a>
-                </div>
-            </div>
-        </div>
-    </div>
+				<p class="auth-text">Для бронирования необходимо авторизоваться</p>
+				<div class="modal-buttons">
+					<a href="{% url 'users:login' %}" class="btn btn-dark">Войти</a>
+					<a href="{% url 'users:register' %}" class="btn btn-warning">Зарегистрироваться</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script src="{% static 'reserv/assets/js/book_table.js' %}"></script>

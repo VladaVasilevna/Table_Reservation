@@ -83,13 +83,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
+# Настройки форматирования дат
+DATE_FORMAT = "d.m.Y"
+DATETIME_FORMAT = "d.m.Y H:i"
+SHORT_DATE_FORMAT = "d.m.Y"
+SHORT_DATETIME_FORMAT = "d.m.Y H:i"
 
 STATIC_URL = "static/"
 

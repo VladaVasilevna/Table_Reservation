@@ -2,8 +2,13 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, reverse_lazy
 
-from users.views import (ProfileUpdateView, ProfileView, UserCreateView,
-                         email_verification)
+from users.views import (
+    ProfileUpdateView,
+    ProfileView,
+    UserCreateView,
+    delete_profile,
+    email_verification,
+)
 
 app_name = "users"
 
@@ -63,4 +68,5 @@ urlpatterns = [
         ),
         name="password_change_done",
     ),
+    path("delete-profile/", delete_profile, name="delete_profile"),
 ]

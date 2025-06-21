@@ -1,0 +1,126 @@
+/* Стили для формы обратной связи */
+.contact .contact-form-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(214, 215, 216, 0.6);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact .contact-form-container .form-group {
+    margin-bottom: 20px;
+}
+
+.contact .contact-form-container input[type=text],
+.contact .contact-form-container input[type=email],
+.contact .contact-form-container textarea {
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 14px;
+    border: 1px solid #cda45e;
+}
+
+.contact .contact-form-container input[type=text]:focus,
+.contact .contact-form-container input[type=email]:focus,
+.contact .contact-form-container textarea:focus {
+    border-color: #d3af71;
+    box-shadow: none;
+}
+
+.contact .contact-form-container input[type=text]::placeholder,
+.contact .contact-form-container input[type=email]::placeholder,
+.contact .contact-form-container textarea::placeholder {
+    color: #a49b89;
+}
+
+.contact .contact-form-container input[type=text],
+.contact .contact-form-container input[type=email] {
+    height: 44px;
+}
+
+.contact .contact-form-container textarea {
+    padding: 10px 12px;
+    min-height: 150px;
+    resize: none;
+    flex-grow: 1;
+}
+
+/* Стили для блока с контактной информацией */
+.contact .info {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(214, 215, 216, 0.6);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact .info h3 {
+    font-size: 20px;
+    color: #777777;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.contact .info p {
+    font-size: 15px;
+    line-height: 26px;
+    margin-bottom: 0;
+    color: #777777;
+}
+
+.contact .info .info-item {
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.contact .info .info-item:last-child {
+    border-bottom: none;
+}
+
+.contact .info .info-item i {
+    font-size: 20px;
+    color: #cda45e;
+    float: left;
+    width: 44px;
+    height: 44px;
+    background: #fff8e1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    margin-right: 15px;
+}
+
+.contact .info .info-item h4 {
+    padding: 0;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1a1814;
+}
+
+.contact .info .info-item p {
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #777777;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .contact .contact-form-container {
+        padding: 20px;
+    }
+    
+    .contact .info {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+} 
