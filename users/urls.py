@@ -6,6 +6,7 @@ from users.views import (
     ProfileUpdateView,
     ProfileView,
     UserCreateView,
+    delete_profile,
     email_verification,
 )
 
@@ -67,4 +68,5 @@ urlpatterns = [
         ),
         name="password_change_done",
     ),
+    path("delete-profile/", delete_profile, name="delete_profile"),
 ]

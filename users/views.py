@@ -1,8 +1,10 @@
 import secrets
 
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
+from django.db import transaction
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -18,20 +20,24 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy("users:login")
 
     def form_valid(self, form):
-        response = super().form_valid(form)  # сохраняет объект в self.object
-        self.object.is_active = False
-        token = secrets.token_hex(16)
-        self.object.token = token
-        self.object.save()
-        host = self.request.get_host()
-        url = f"http://{host}/users/email-confirm/{token}/"
-        send_mail(
-            subject="Подтверждение почты",
-            message=f"Привет! Перейди по ссылке для подтверждения почты {url}",
-            from_email=EMAIL_HOST_USER,
-            recipient_list=[self.object.email],
-        )
-        return response
+        try:
+            with transaction.atomic():
+                response = super().form_valid(form)
+                self.object.is_active = False
+                self.object.token = secrets.token_hex(16)
+                self.object.save()
+                host = self.request.get_host()
+                url = f"http://{host}/users/email-confirm/{self.object.token}/"
+                send_mail(
+                    subject="Подтверждение почты",
+                    message=f"Привет! Перейди по ссылке для подтверждения почты {url}",
+                    from_email=EMAIL_HOST_USER,
+                    recipient_list=[self.object.email],
+                )
+                return response
+        except Exception:
+            form.add_error(None, "Ошибка отправки письма. Попробуйте позже.")
+            return self.form_invalid(form)
 
 
 def email_verification(request, token):
@@ -69,6 +75,16 @@ class ProfileView(LoginRequiredMixin, DetailView):
     def get_object(self):
         return self.request.user
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавляем бронирования пользователя
+        from reserv.models import Reservation
+
+        context["reservations"] = Reservation.objects.filter(
+            user=self.request.user
+        ).order_by("-created_at")
+        return context
+
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
@@ -82,3 +98,41 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_form_class(self):
         print("Используемая форма:", self.form_class)
         return super().get_form_class()
+
+
+@login_required
+def delete_profile(request):
+    """API для удаления профиля пользователя"""
+    if request.method != "POST":
+        return JsonResponse({"error": "Метод не поддерживается"}, status=405)
+
+    try:
+        user = request.user
+
+        # Проверяем, есть ли активные бронирования
+        from reserv.models import Reservation
+
+        active_reservations = Reservation.objects.filter(
+            user=user, status__in=["pending", "confirmed"]
+        ).count()
+
+        if active_reservations > 0:
+            return JsonResponse(
+                {
+                    "error": (
+                        f"Нельзя удалить профиль с активными бронированиями "
+                        f"({active_reservations} шт.). Сначала отмените все бронирования."
+                    )
+                },
+                status=400,
+            )
+
+        # Удаляем пользователя
+        user.delete()
+
+        return JsonResponse(
+            {"success": True, "message": "Профиль успешно удален", "redirect_url": "/"}
+        )
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)

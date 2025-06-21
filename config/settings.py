@@ -83,13 +83,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
+# Настройки форматирования дат
+DATE_FORMAT = "d.m.Y"
+DATETIME_FORMAT = "d.m.Y H:i"
+SHORT_DATE_FORMAT = "d.m.Y"
+SHORT_DATETIME_FORMAT = "d.m.Y H:i"
 
 STATIC_URL = "static/"
 
@@ -114,15 +122,16 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", False) == "True"
-EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", False) == "True"
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 465))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "False") == "True"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "False") == "True"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SERVER_EMAIL = EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CACHE_ENABLED = True
 if CACHE_ENABLED:
