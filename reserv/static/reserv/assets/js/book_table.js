@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			// Проверка авторизации
 			if (!isAuthenticated) {
-				document.getElementById('auth-modal').style.display = 'block';
+				document.getElementById('auth-modal').style.display = 'flex';
 				return;
 			}
 
