@@ -1,5 +1,7 @@
+import logging
 import secrets
 
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
@@ -10,8 +12,29 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
-from users.forms import UserProfileForm, UserRegisterForm
+from users.forms import UserLoginForm, UserProfileForm, UserRegisterForm
 from users.models import User
+
+logger = logging.getLogger(__name__)
+
+
+def login_view(request):
+    """Кастомное представление для входа с использованием email"""
+    if request.method == "POST":
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("reserv:index")
+            else:
+                form.add_error(None, "Неверный email или пароль.")
+    else:
+        form = UserLoginForm()
+
+    return render(request, "users/registration/login.html", {"form": form})
 
 
 class UserCreateView(CreateView):
@@ -96,7 +119,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
     def get_form_class(self):
-        print("Используемая форма:", self.form_class)
+        logger.info("Используемая форма: %s", self.form_class)
         return super().get_form_class()
 
 

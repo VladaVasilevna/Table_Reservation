@@ -67,3 +67,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def get_full_name(self):
+        """Возвращает полное имя пользователя"""
+        return self.full_name or self.email
+
+    def get_short_name(self):
+        """Возвращает короткое имя пользователя"""
+        return self.full_name or self.email

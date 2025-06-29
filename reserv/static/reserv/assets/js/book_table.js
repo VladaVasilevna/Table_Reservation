@@ -43,14 +43,14 @@ document.addEventListener('DOMContentLoaded', function () {
 					const tableId = parseInt(button.textContent.trim());
 					const tableData = tables.find(t => t.number === tableId);
 
-					if (tableData?.reserved) {
+					if (tableData && !tableData.is_available) {
 						button.disabled = true;
 						button.classList.add('reserved');
 						button.title = `Стол забронирован`;
 					} else {
 						button.disabled = false;
 						button.classList.remove('reserved');
-						button.title = `Вместимость ${tableData.capacity} персон`;
+						button.title = `Вместимость ${tableData?.capacity || 'неизвестно'} персон`;
 					}
 				});
 			});
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			// Проверка авторизации
 			if (!isAuthenticated) {
-				document.getElementById('auth-modal').style.display = 'block';
+				document.getElementById('auth-modal').style.display = 'flex';
 				return;
 			}
 
@@ -267,8 +267,9 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 	}
 
-	// Вызываем при изменении даты и времени
-	[dateInput, timeInput].forEach(input => {
-		input.addEventListener('change', updateTableIdMap);
-	});
+	// Вызываем при загрузке страницы, если дата и время уже выбраны
+	if (dateInput.value && timeInput.value) {
+		console.log('Initial table ID map update...');
+		updateTableIdMap();
+	}
 });

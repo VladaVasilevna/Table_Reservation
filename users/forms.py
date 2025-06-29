@@ -1,9 +1,11 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.forms import BooleanField, ClearableFileInput, ModelForm, TextInput
 
 from users.choices import COUNTRY_CHOICES
-from users.models import User
+
+User = get_user_model()
 
 
 class StyleFormMixin:
@@ -27,6 +29,17 @@ class UserRegisterForm(UserCreationForm):
             field.widget.attrs["class"] = "form-control"
 
 
+class UserRegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ["email", "password1", "password2"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+
+
 class RegistrationForm(UserCreationForm):
     class Meta:
         model = User
@@ -36,6 +49,30 @@ class RegistrationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs["class"] = "form-control"
+
+
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(label="Email")
+    password = forms.CharField(widget=forms.PasswordInput, label="Пароль")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+
+    def clean(self):
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+
+        if email and password:
+            try:
+                self.user_cache = User.objects.get(email=email)
+                if not self.user_cache.check_password(password):
+                    raise forms.ValidationError("Неверный email или пароль.")
+            except User.DoesNotExist:
+                raise forms.ValidationError("Неверный email или пароль.")
+
+        return self.cleaned_data
 
 
 class LoginForm(AuthenticationForm):
