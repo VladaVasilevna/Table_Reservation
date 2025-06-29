@@ -2,11 +2,14 @@ from django.urls import path
 
 from . import views
 
+app_name = "reserv"
+
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("", views.home, name="index"),
     path("api/tables/", views.get_tables, name="get_tables"),
-    path("api/settings/", views.get_settings, name="get_settings"),
+    path("api/settings/", views.get_settings, name="settings_api"),
     path("book_table/", views.book_table, name="book_table"),
+    path("contact/", views.contact, name="contact"),
     path("profile/", views.profile, name="profile"),
     path("cancel_booking/<int:pk>/", views.cancel_booking, name="cancel_booking"),
     # API для работы с бронированиями

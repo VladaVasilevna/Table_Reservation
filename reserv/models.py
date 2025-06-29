@@ -1,3 +1,5 @@
+from datetime import time
+
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -41,13 +43,13 @@ class Settings(models.Model):
         verbose_name="Продолжительность брони (часы)",
     )
     restaurant_open_time = models.TimeField(
-        default="11:00", verbose_name="Время открытия ресторана"
+        default=time(11, 0), verbose_name="Время открытия ресторана"
     )
     restaurant_close_time = models.TimeField(
-        default="23:00", verbose_name="Время закрытия ресторана"
+        default=time(23, 0), verbose_name="Время закрытия ресторана"
     )
     last_booking_time = models.TimeField(
-        default="22:00",
+        default=time(22, 0),
         help_text="До какого времени кухня принимает заказы",
         verbose_name="Последнее время бронирования",
     )
@@ -66,9 +68,9 @@ class Settings(models.Model):
             id=1,
             defaults={
                 "booking_duration_hours": 2,
-                "restaurant_open_time": "11:00",
-                "restaurant_close_time": "23:00",
-                "last_booking_time": "22:00",
+                "restaurant_open_time": time(11, 0),
+                "restaurant_close_time": time(23, 0),
+                "last_booking_time": time(22, 0),
             },
         )
         return settings
@@ -135,7 +137,7 @@ class Reservation(models.Model):
         verbose_name_plural = "Бронирования"
 
     def __str__(self):
-        return f"Бронь #{self.id} - {self.user.username}"
+        return f"Бронь #{self.id} - {self.user.email}"
 
     def get_end_time(self):
         """Получить время окончания брони"""

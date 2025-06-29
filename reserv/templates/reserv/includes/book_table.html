@@ -60,7 +60,7 @@
 			<div class="modal-content booking-modal-content">
 				<span class="close">&times;</span>
 				<h4 id="modal-table-num"></h4>
-				<form method="post" action="{% url 'book_table' %}" class="booking-form">
+				<form method="post" action="{% url 'reserv:book_table' %}" class="booking-form">
 					{% csrf_token %}
 					<input type="hidden" name="table_id" id="modal-table-id">
 

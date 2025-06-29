@@ -181,6 +181,45 @@ gunicorn config.wsgi:application --bind 0.0.0.0:8000
 uwsgi --ini uwsgi.ini
 ```
 
+# Тестирование
+
+## Запуск тестов
+
+```bash
+# Все тесты
+python manage.py test
+
+# Конкретное приложение
+python manage.py test reserv
+python manage.py test users
+
+# С покрытием
+coverage run --source='.' manage.py test
+coverage report
+coverage html
+```
+
+## Структура тестов
+
+```
+reserv/tests/
+├── test_models.py      # Тесты моделей
+├── test_forms.py       # Тесты форм
+├── test_views.py       # Тесты представлений
+└── test_integration.py # Интеграционные тесты
+
+users/tests/
+├── test_models.py      # Тесты моделей
+├── test_forms.py       # Тесты форм
+└── test_views.py       # Тесты представлений
+```
+
+## Зависимости
+
+- pytest
+- factory-boy
+- coverage 
+
 ## 📖 Использование
 
 ### Для клиентов:
@@ -247,14 +286,6 @@ uwsgi --ini uwsgi.ini
    - Удалите все файлы в `migrations/` (кроме `__init__.py`)
    - Выполните `python manage.py makemigrations`
    - Затем `python manage.py migrate`
-
-## 🤝 Вклад в проект
-
-1. Форкните репозиторий
-2. Создайте ветку для новой функции (`git checkout -b feature/amazing-feature`)
-3. Зафиксируйте изменения (`git commit -m 'Add amazing feature'`)
-4. Отправьте в ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
 
 ## 📄 Лицензия
 

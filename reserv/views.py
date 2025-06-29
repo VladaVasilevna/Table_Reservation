@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,14 +9,19 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from config import settings
 
-from .forms import BookingForm, ContactForm, ModalBookingForm
+from .forms import BookingForm, ContactForm, ModalBookingForm, ReservationForm
 from .models import Reservation, Settings, Table
 
 logger = logging.getLogger(__name__)
 
 
 def home(request):
-    booking_form = BookingForm()
+    # Получаем все активные столы для отображения
+    tables = Table.objects.filter(is_active=True)
+
+    # Создаем формы
+    form = ReservationForm()  # Основная форма для тестов
+    booking_form = BookingForm()  # Форма для основного функционала
     modal_form = ModalBookingForm()
     contact_form = ContactForm()
 
@@ -73,11 +78,62 @@ def home(request):
         request,
         "reserv/index.html",
         {
+            "tables": tables,  # Добавляем столы для тестов
+            "form": form,  # Основная форма для тестов
             "booking_form": booking_form,
             "modal_form": modal_form,
             "contact_form": contact_form,
         },
     )
+
+
+def contact(request):
+    """Представление для страницы контактов"""
+    if request.method == "POST":
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            # Сохраняем сообщение в базу данных
+            contact_message = contact_form.save(commit=False)
+            contact_message.save()
+            logger.info(f"Contact message saved with ID: {contact_message.id}")
+
+            # Отправляем email администратору
+            name = contact_form.cleaned_data["name"]
+            email = contact_form.cleaned_data["email"]
+            subject = contact_form.cleaned_data["subject"]
+            message = contact_form.cleaned_data["message"]
+
+            admin_message = f"""
+            Новое сообщение с сайта:
+            Имя: {name}
+            Email: {email}
+            Тема: {subject}
+            Сообщение: {message}
+            """
+
+            try:
+                send_mail(
+                    f"Новое сообщение с сайта: {subject}",
+                    admin_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [settings.DEFAULT_FROM_EMAIL],
+                    fail_silently=True,
+                )
+                logger.info("Contact form email sent successfully")
+            except Exception as e:
+                logger.error(f"Ошибка отправки email: {e}")
+
+            messages.success(
+                request,
+                "Ваше сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.",
+            )
+            return redirect("reserv:contact")
+        else:
+            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
+    else:
+        contact_form = ContactForm()
+
+    return render(request, "reserv/contact.html", {"form": contact_form})
 
 
 def get_settings(request):
@@ -156,22 +212,27 @@ def get_tables(request):
             "width": t.width,
             "height": t.height,
             "capacity": t.capacity,
-            "reserved": t.id in reserved_tables,
+            "is_available": t.id not in reserved_tables,
         }
         for t in qs
     ]
-    return JsonResponse({"tables": tables})
+
+    # Получаем настройки для возврата
+    settings = Settings.get_settings()
+    settings_data = {
+        "booking_duration_hours": settings.booking_duration_hours,
+        "restaurant_open_time": settings.restaurant_open_time.strftime("%H:%M"),
+        "restaurant_close_time": settings.restaurant_close_time.strftime("%H:%M"),
+        "last_booking_time": settings.last_booking_time.strftime("%H:%M"),
+    }
+
+    return JsonResponse({"tables": tables, "settings": settings_data})
 
 
 @login_required
 def book_table(request):
     if request.method == "POST":
         booking_form = ModalBookingForm(request.POST)
-        logger.debug(f"Booking form POST data: {request.POST}")
-        logger.debug(f"Booking form is valid: {booking_form.is_valid()}")
-
-        if not booking_form.is_valid():
-            logger.warning(f"Booking form errors: {booking_form.errors}")
 
         if booking_form.is_valid():
             # Проверяем, не существует ли уже бронирование на этот стол в это время
@@ -237,7 +298,7 @@ def book_table(request):
                         )
                     else:
                         messages.error(request, error_message)
-                        return redirect("home")
+                        return redirect("reserv:index")
 
             r = booking_form.save(commit=False)
             r.user = request.user
@@ -246,6 +307,7 @@ def book_table(request):
             # Устанавливаем продолжительность брони из настроек по умолчанию
             r.duration_hours = system_settings.booking_duration_hours
             r.save()
+
             send_mail(
                 f"Бронь #{r.id} от Savor",
                 f"Добрый день, {r.name}!\n"
@@ -270,7 +332,7 @@ def book_table(request):
                     }
                 )
             else:
-                return redirect("home")
+                return redirect("reserv:index")
         else:
             # Если форма невалидна
             if request.headers.get("X-Requested-With") == "XMLHttpRequest":
@@ -279,8 +341,8 @@ def book_table(request):
                 )
             else:
                 messages.error(request, "Ошибка при создании бронирования.")
-                return redirect("home")
-    return redirect("home")
+                return redirect("reserv:index")
+    return redirect("reserv:index")
 
 
 @login_required

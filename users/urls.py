@@ -1,5 +1,5 @@
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 from django.urls import path, reverse_lazy
 
 from users.views import (
@@ -8,16 +8,13 @@ from users.views import (
     UserCreateView,
     delete_profile,
     email_verification,
+    login_view,
 )
 
 app_name = "users"
 
 urlpatterns = [
-    path(
-        "login/",
-        LoginView.as_view(template_name="users/registration/login.html"),
-        name="login",
-    ),
+    path("login/", login_view, name="login"),
     path("logout/", LogoutView.as_view(next_page="/"), name="logout"),
     path("register/", UserCreateView.as_view(), name="register"),
     path("email-confirm/<str:token>/", email_verification, name="email-confirm"),

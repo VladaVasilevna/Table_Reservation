@@ -73,6 +73,18 @@ class BookingForm(forms.ModelForm):
             ),
         }
 
+    def clean_date(self):
+        date = self.cleaned_data.get("date")
+        if date and date < datetime.now().date():
+            raise ValidationError("Нельзя бронировать на прошедшую дату.")
+        return date
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email and "@" not in email:
+            raise ValidationError("Введите корректный email адрес.")
+        return email
+
 
 class ModalBookingForm(forms.ModelForm):
     """Форма для модального окна с read-only полями даты и времени"""
@@ -108,6 +120,7 @@ class ModalBookingForm(forms.ModelForm):
                     "placeholder": "Дата",
                     "type": "date",
                     "required": True,
+                    "readonly": "readonly",
                     "style": "background-color: #f8f9fa; cursor: not-allowed;",
                 }
             ),
@@ -117,6 +130,7 @@ class ModalBookingForm(forms.ModelForm):
                     "placeholder": "Время",
                     "type": "time",
                     "required": True,
+                    "readonly": "readonly",
                     "style": "background-color: #f8f9fa; cursor: not-allowed;",
                 }
             ),
@@ -136,6 +150,12 @@ class ModalBookingForm(forms.ModelForm):
                 }
             ),
         }
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email and "@" not in email:
+            raise ValidationError("Введите корректный email адрес.")
+        return email
 
 
 class ContactForm(forms.ModelForm):
@@ -225,6 +245,12 @@ class ReservationForm(forms.ModelForm):
             ),
             "comment": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
+
+    def clean_date(self):
+        date = self.cleaned_data.get("date")
+        if date and date < datetime.now().date():
+            raise ValidationError("Нельзя бронировать на прошедшую дату.")
+        return date
 
     def clean_time(self):
         """Проверка на случай ручной подмены значения"""

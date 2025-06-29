@@ -1,0 +1,91 @@
+{% extends 'reserv/base.html' %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact">
+	<div class="container">
+		<div class="section-header">
+			<h2>Контакты</h2>
+			<p>Свяжитесь с нами</p>
+		</div>
+
+		<div class="row gy-4">
+			<div class="col-lg-6">
+				<div class="info-item d-flex">
+					<i class="bi bi-geo-alt flex-shrink-0"></i>
+					<div>
+						<h4>Адрес:</h4>
+						<p>ул. Примерная, 123, Москва, Россия</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="info-item d-flex">
+					<i class="bi bi-phone flex-shrink-0"></i>
+					<div>
+						<h4>Телефон:</h4>
+						<p>+7 (495) 123-45-67</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="info-item d-flex">
+					<i class="bi bi-envelope flex-shrink-0"></i>
+					<div>
+						<h4>Email:</h4>
+						<p>info@restaurant.com</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="info-item d-flex">
+					<i class="bi bi-clock flex-shrink-0"></i>
+					<div>
+						<h4>Часы работы:</h4>
+						<p>Ежедневно с 11:00 до 23:00</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row gy-4 mt-4">
+			<div class="col-lg-6">
+				<form method="post" class="php-email-form">
+					{% csrf_token %}
+					<div class="row gy-4">
+						<div class="col-md-6">
+							<input type="text" name="name" class="form-control" placeholder="Ваше имя" required>
+						</div>
+						<div class="col-md-6">
+							<input type="email" name="email" class="form-control" placeholder="Ваш Email" required>
+						</div>
+					</div>
+					<div class="row gy-4 mt-2">
+						<div class="col-md-12">
+							<input type="text" name="subject" class="form-control" placeholder="Тема" required>
+						</div>
+						<div class="col-md-12">
+							<textarea class="form-control" name="message" rows="6" placeholder="Сообщение" required></textarea>
+						</div>
+					</div>
+					<div class="text-center mt-4">
+						<button type="submit">Отправить сообщение</button>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="map">
+					<iframe
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.00369368400567!3d40.71312937933185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a23e28c1191%3A0x49f75d3281df052a!2s150%20Park%20Row%2C%20New%20York%2C%20NY%2010007%2C%20USA!5e0!3m2!1sen!2sru!4v1645000000000!5m2!1sen!2sru"
+						width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
