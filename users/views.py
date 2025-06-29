@@ -1,4 +1,5 @@
 import secrets
+import logging
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +13,8 @@ from django.views.generic import CreateView, DetailView, UpdateView
 from config.settings import EMAIL_HOST_USER
 from users.forms import UserProfileForm, UserRegisterForm
 from users.models import User
+
+logger = logging.getLogger(__name__)
 
 
 class UserCreateView(CreateView):
@@ -96,7 +99,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
     def get_form_class(self):
-        print("Используемая форма:", self.form_class)
+        logger.info("Используемая форма: %s", self.form_class)
         return super().get_form_class()
 
 

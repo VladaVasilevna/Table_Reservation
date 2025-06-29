@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import logging
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,8 @@ from config import settings
 from .forms import BookingForm, ContactForm, ModalBookingForm
 from .models import Reservation, Settings, Table
 
+logger = logging.getLogger(__name__)
+
 
 def home(request):
     booking_form = BookingForm()
@@ -19,24 +22,18 @@ def home(request):
 
     # Обработка формы обратной связи
     if request.method == "POST" and "contact_submit" in request.POST:
-        print(f"Contact form POST data: {request.POST}")  # Отладочная информация
+        logger.debug(f"Contact form POST data: {request.POST}")
         contact_form = ContactForm(request.POST)
-        print(
-            f"Contact form is valid: {contact_form.is_valid()}"
-        )  # Отладочная информация
+        logger.debug(f"Contact form is valid: {contact_form.is_valid()}")
 
         if not contact_form.is_valid():
-            print(
-                f"Contact form errors: {contact_form.errors}"
-            )  # Отладочная информация
+            logger.warning(f"Contact form errors: {contact_form.errors}")
 
         if contact_form.is_valid():
             # Сохраняем сообщение в базу данных
             contact_message = contact_form.save(commit=False)
             contact_message.save()
-            print(
-                f"Contact message saved with ID: {contact_message.id}"
-            )  # Отладочная информация
+            logger.info(f"Contact message saved with ID: {contact_message.id}")
 
             # Отправляем email администратору
             name = contact_form.cleaned_data["name"]
@@ -60,9 +57,9 @@ def home(request):
                     [settings.DEFAULT_FROM_EMAIL],  # Отправляем администратору
                     fail_silently=True,  # Не показываем ошибки отправки пользователю
                 )
-                print("Email sent successfully")  # Отладочная информация
+                logger.info("Contact form email sent successfully")
             except Exception as e:
-                print(f"Ошибка отправки email: {e}")
+                logger.error(f"Ошибка отправки email: {e}")
 
             messages.success(
                 request,
@@ -98,7 +95,7 @@ def get_settings(request):
             }
         )
     except Exception as e:
-        print(f"Error in get_settings: {e}")  # Отладочная информация
+        logger.error(f"Error in get_settings: {e}")
         # Возвращаем значения по умолчанию в случае ошибки
         return JsonResponse(
             {
@@ -170,11 +167,11 @@ def get_tables(request):
 def book_table(request):
     if request.method == "POST":
         booking_form = ModalBookingForm(request.POST)
-        print(f"POST data: {request.POST}")  # Отладочная информация
-        print(f"Form is valid: {booking_form.is_valid()}")  # Отладочная информация
+        logger.debug(f"Booking form POST data: {request.POST}")
+        logger.debug(f"Booking form is valid: {booking_form.is_valid()}")
 
         if not booking_form.is_valid():
-            print(f"Form errors: {booking_form.errors}")  # Отладочная информация
+            logger.warning(f"Booking form errors: {booking_form.errors}")
 
         if booking_form.is_valid():
             # Проверяем, не существует ли уже бронирование на этот стол в это время
