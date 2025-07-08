@@ -7,6 +7,13 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+    # Автоматически создаём папку logs, если её нет
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    logs_dir = os.path.join(base_dir, "logs")
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir)
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
