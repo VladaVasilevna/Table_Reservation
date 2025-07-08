@@ -1,0 +1,111 @@
+{% load static %}
+<!-- Section Title -->
+<div class="container section-title" data-aos="fade-up">
+    <h2>Меню</h2>
+    <div><span>Check Our Tasty</span> <span class="description-title">Menu</span></div>
+</div><!-- End Section Title -->
+
+<div class="container isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-12 d-flex justify-content-center">
+            <ul class="menu-filters isotope-filters">
+                <li data-filter="*" class="filter-active">Все</li>
+                <li data-filter=".filter-starters">Закуски</li>
+                <li data-filter=".filter-salads">Салаты</li>
+                <li data-filter=".filter-specialty">От шефа</li>
+            </ul>
+        </div>
+    </div><!-- Menu Filters -->
+
+    <div class="row isotope-container" data-aos="fade-up" data-aos-delay="200">
+        <div class="col-lg-6 menu-item isotope-item filter-starters">
+            <img src="{% static 'reserv/assets/img/menu/lobster-bisque.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Запеченый лобстер</a><span>2150.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Свежеприготовленный лобстер с добавлением ароматной зелени и лимонного сока
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-specialty">
+            <img src="{% static 'reserv/assets/img/menu/bread-barrel.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Хлебная бочка</a><span>890.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                 Ароматный свежий хлеб наполненный нежным сливочным сыром, запеченным с овощами и ароматными травами
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-starters">
+            <img src="{% static 'reserv/assets/img/menu/cake.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Крабовый пирог</a><span>1160.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Нежный крабовый пирог, подается на поджаренной булочке с салатом и соусом тартар
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-salads">
+            <img src="{% static 'reserv/assets/img/menu/caesar.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Цезарь с курицей</a><span>1120.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Классический салат с нежным обжаренным куриным филе, хрустящими листьями салата, золотистыми чесночными гренками и щедрой порцией тертого пармезана, заправленный фирменным соусом "Цезарь"
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-specialty">
+            <img src="{% static 'reserv/assets/img/menu/tuscan-grilled.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Тосканский гриль</a><span>1640.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Жареная курица с проволоне, артишоками и жареным красным песто
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-starters">
+            <img src="{% static 'reserv/assets/img/menu/mozzarella.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Ломтики моцареллы</a><span>1100.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Сыр сочетается с ароматным оливковым маслом, свежей зеленью базилика и легкой кислинкой бальзамического уксуса и лимонного сока
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-salads">
+            <img src="{% static 'reserv/assets/img/menu/greek-salad.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Греческий салат</a><span>950.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Свежий шпинат, хрустящий салат, помидоры и оливки
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-salads">
+            <img src="{% static 'reserv/assets/img/menu/spinach-salad.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Салат со шпинатом</a><span>980.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Свежий шпинат с грибами, яйцом и теплой заправкой из бекона
+            </div>
+        </div><!-- Menu Item -->
+
+        <div class="col-lg-6 menu-item isotope-item filter-specialty">
+            <img src="{% static 'reserv/assets/img/menu/lobster-roll.jpg' %}" class="menu-img" alt="">
+            <div class="menu-content">
+                <a href="#">Лобстер Ролл</a><span>1990.0 ₽</span>
+            </div>
+            <div class="menu-ingredients">
+                Сочное мясо лобстера, фирменный соус и хрустящий салат на поджаренном лаваше
+            </div>
+        </div><!-- Menu Item -->
+    </div><!-- Menu Container -->
+</div>

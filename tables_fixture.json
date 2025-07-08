@@ -1,0 +1,201 @@
+[
+  {
+    "model": "reserv.table",
+    "pk": 1,
+    "fields": {
+      "number": 1,
+      "capacity": 4,
+      "shape": "rect",
+      "x": 103,
+      "y": 43,
+      "width": 59,
+      "height": 118,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 2,
+    "fields": {
+      "number": 2,
+      "capacity": 2,
+      "shape": "rect",
+      "x": 103,
+      "y": 221,
+      "width": 60,
+      "height": 59,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 3,
+    "fields": {
+      "number": 3,
+      "capacity": 4,
+      "shape": "rect",
+      "x": 366,
+      "y": 43,
+      "width": 58,
+      "height": 118,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 4,
+    "fields": {
+      "number": 4,
+      "capacity": 2,
+      "shape": "rect",
+      "x": 366,
+      "y": 222,
+      "width": 58,
+      "height": 59,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 5,
+    "fields": {
+      "number": 5,
+      "capacity": 2,
+      "shape": "rect",
+      "x": 366,
+      "y": 307,
+      "width": 58,
+      "height": 60,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 6,
+    "fields": {
+      "number": 6,
+      "capacity": 4,
+      "shape": "rect",
+      "x": 565,
+      "y": 73,
+      "width": 58,
+      "height": 118,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 7,
+    "fields": {
+      "number": 7,
+      "capacity": 4,
+      "shape": "rect",
+      "x": 768,
+      "y": 73,
+      "width": 59,
+      "height": 119,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 8,
+    "fields": {
+      "number": 8,
+      "capacity": 4,
+      "shape": "rect",
+      "x": 972,
+      "y": 73,
+      "width": 59,
+      "height": 118,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 9,
+    "fields": {
+      "number": 9,
+      "capacity": 4,
+      "shape": "round",
+      "x": 587,
+      "y": 295,
+      "width": 66,
+      "height": 66,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 10,
+    "fields": {
+      "number": 10,
+      "capacity": 10,
+      "shape": "round",
+      "x": 732,
+      "y": 327,
+      "width": 132,
+      "height": 132,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 11,
+    "fields": {
+      "number": 11,
+      "capacity": 4,
+      "shape": "round",
+      "x": 942,
+      "y": 295,
+      "width": 66,
+      "height": 66,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 12,
+    "fields": {
+      "number": 12,
+      "capacity": 3,
+      "shape": "rect",
+      "x": 676,
+      "y": 587,
+      "width": 60,
+      "height": 60,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.table",
+    "pk": 13,
+    "fields": {
+      "number": 13,
+      "capacity": 3,
+      "shape": "rect",
+      "x": 854,
+      "y": 588,
+      "width": 59,
+      "height": 58,
+      "is_active": true
+    }
+  },
+  {
+    "model": "reserv.reservation",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "table": 1,
+      "name": "Влада",
+      "email": "vladusik-home@mail.ru",
+      "phone": "+7(999)829-77-93",
+      "date": "2025-06-21",
+      "time": "15:00:00",
+      "guests": 2,
+      "comment": "",
+      "created_at": "2025-06-18T22:03:35.986Z",
+      "status": "pending"
+    }
+  }
+]
